@@ -61,3 +61,7 @@ This project is designed to integrate with FastAPI in the future, which will pro
 - **Claude 3 Opus on Perplexity**: Claude 3 Opus, accessed via Perplexity, was utilized specifically to generate code for the layout, aiding in efficient structuring and alignment of components. This assistance included suggestions for positioning, responsiveness, and use of Tailwind utility classes to create a clean and functional layout. 
 - **Component Structuring**: AI recommendations also supported the modular architecture by suggesting reusable component structures that improve maintainability and scalability.
 - **Mock Data Creation**: AI assisted in creating mock data files, simulating API responses for realistic testing and layout verification.
+
+## Wireframe
+
+![HappyNest Wireframe](./WireFrame.png)
