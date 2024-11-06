@@ -19,7 +19,7 @@ export default function Home() {
 
         {!location ? (
           <>
-            <p className="mb-4 text-lg">Click below to find happy news near you!</p>
+            <p className="mb-4 text-lg">Click below to find happy news near you! Please wait a few seconds after answering the prompt :)</p>
             <LocationRequest onLocationSuccess={handleLocationSuccess} />
           </>
         ) : (

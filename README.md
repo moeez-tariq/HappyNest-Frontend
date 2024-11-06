@@ -8,25 +8,34 @@ This project is designed to integrate with FastAPI in the future, which will pro
 
 ## Component Documentation
 
-1. **News Section**
+1. **Navbar**
+   - Links to each of the various pages in the application
+
+2. **News Page**
    - Displays good news and updates and redirects users to the full article.
 
-2. **About Section**
+3. **NewsList**
+   - Renders a list of articles containing information about their title, description, and a link to the actual website.
+
+4. **LocationRequest**
+   - Button that handles requesting and fetching a user's location from the browser, and dealing with the location info appropriately. Once the data is fetched, the button disappears.
+
+5. **About Page**
    - Provides information about *HappyNest* and its mission.
 
-3. **Contact Us Section**
+6. **Contact Page**
    - Contains information about the developers of the site and how to contact them.
 
 *Upcoming Components*:
-   - **Good Deed of the Day**: This feature will highlight a selected good deed daily to inspire users.
+   - **GoodDeedList**: This component will highlight good deeds daily to inspire users.
    - **Community Section**: This section will allow users to interact with each other and build a sense of community. 
 
 ## Setup Instructions
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/moeez-tariq/happyNest-Frontend
-   cd happyNest-Frontend
+   git clone https://github.com/moeez-tariq/HappyNest-Frontend
+   cd HappyNest-Frontend
    ```
 
 2. **Install Dependencies**
@@ -46,9 +55,9 @@ This project is designed to integrate with FastAPI in the future, which will pro
 
 ### Design Decisions
 
-- **User-Centric Design**: The *HappyNest* wireframe was crafted to prioritize essential sections—*News*, *About*, and *Contact Us*—to provide a clear and informative experience for users. The minimalistic and user-friendly interface allows for easy navigation. Future sections like *Good Deed of the Day* and *Community* are planned to further enhance user interaction and engagement.
+- **User-Centric Design**: The *HappyNest* wireframe was crafted to prioritize essential sections—*News*, *About*, and *Contact Us*—to provide a clear and informative experience for users. The minimalistic and user-friendly interface allows for easy navigation. The *LocationRequest* component is presented in the middle of the page, so users are inclined to click it and share their location data as soon as possible to access the full features of the application. Future sections like *Good Deed of the Day* and *Community* are planned to further enhance user interaction and engagement.
 
-- **Scalable Layout**: A modular layout was created to support scalability. The Figma wireframe includes placeholders for additional components, ensuring that features can be added without affecting the current structure. This modular design allows each component to be developed independently, supporting iterative development and future updates.
+- **Scalable Layout**: A modular, page-based layout was created to support scalability. The Figma wireframe includes placeholders for additional components, ensuring that features can be added without affecting the current structure. This design allows each component to be developed independently, supporting iterative development and future updates.
 
 ### Technical Choices
 
@@ -60,7 +69,7 @@ This project is designed to integrate with FastAPI in the future, which will pro
 
 - **Claude 3 Opus on Perplexity**: Claude 3 Opus, accessed via Perplexity, was utilized specifically to generate code for the layout, aiding in efficient structuring and alignment of components. This assistance included suggestions for positioning, responsiveness, and use of Tailwind utility classes to create a clean and functional layout. 
 - **Component Structuring**: AI recommendations also supported the modular architecture by suggesting reusable component structures that improve maintainability and scalability.
-- **Mock Data Creation**: AI assisted in creating mock data files, simulating API responses for realistic testing and layout verification.
+- **Mock Data Creation**: AI assisted in creating mock data, simulating API responses for realistic testing and layout verification.
 
 ## Wireframe
 

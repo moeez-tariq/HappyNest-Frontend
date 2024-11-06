@@ -5,13 +5,83 @@ export async function POST(req) {
 
     // Mock news data
     const mockNews = [
-      { title: 'Incredible Rescue of Stranded Hikers', url: 'https://example.com/story1' },
-      { title: 'Local Community Comes Together to Clean Up Park', url: 'https://example.com/story2' },
-      { title: 'Uplifting Stories from the Pandemic', url: 'https://example.com/story3' },
-      { title: 'Kind Stranger Pays for Family’s Groceries', url: 'https://example.com/story4' },
-      { title: 'New Library Opens in Town', url: 'https://example.com/story5' },
-      { title: 'Local Teen Wins National Science Competition', url: 'https://example.com/story6' },
-      { title: 'Firefighters Rescue Cat from Tree', url: 'https://example.com/story7' },
+        {
+            "title": "Incredible Rescue of Stranded Hikers",
+            "content": "Read the full story at https://example.com/story1",
+            "location": {
+              "city": "Unknown",
+              "state": "Unknown",
+              "country": "USA"
+            },
+            "source": "Local News",
+            "sentiment": "positive"
+          },
+          {
+            "title": "Local Community Comes Together to Clean Up Park",
+            "content": "Read the full story at https://example.com/story2",
+            "location": {
+              "city": "Unknown",
+              "state": "Unknown",
+              "country": "USA"
+            },
+            "source": "Local News",
+            "sentiment": "positive"
+          },
+          {
+            "title": "Uplifting Stories from the Pandemic",
+            "content": "Read the full story at https://example.com/story3",
+            "location": {
+              "city": "Unknown",
+              "state": "Unknown",
+              "country": "USA"
+            },
+            "source": "Local News",
+            "sentiment": "positive"
+          },
+          {
+            "title": "Kind Stranger Pays for Family’s Groceries",
+            "content": "Read the full story at https://example.com/story4",
+            "location": {
+              "city": "Unknown",
+              "state": "Unknown",
+              "country": "USA"
+            },
+            "source": "Local News",
+            "sentiment": "positive"
+          },
+          {
+            "title": "New Library Opens in Town",
+            "content": "Read the full story at https://example.com/story5",
+            "location": {
+              "city": "Unknown",
+              "state": "Unknown",
+              "country": "USA"
+            },
+            "source": "Local News",
+            "sentiment": "neutral"
+          },
+          {
+            "title": "Local Teen Wins National Science Competition",
+            "content": "Read the full story at https://example.com/story6",
+            "location": {
+              "city": "Unknown",
+              "state": "Unknown",
+              "country": "USA"
+            },
+            "source": "Local News",
+            "sentiment": "positive"
+          },
+          {
+            "title": "Firefighters Rescue Cat from Tree",
+            "content": "Read the full story at https://example.com/story7",
+            "location": {
+              "city": "Unknown",
+              "state": "Unknown",
+              "country": "USA"
+            },
+            "source": "Local News",
+            "sentiment": "positive"
+          }
     ];
 
     // Respond with mock news data

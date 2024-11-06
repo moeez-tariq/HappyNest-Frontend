@@ -49,7 +49,7 @@ export default function NewsList({ lat, lon }) {
           {news.map((item, index) => (
             <div key={index} className="border rounded-lg shadow-lg p-4">
               <h3 className="font-semibold text-lg mb-2">
-                <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                <a href={item.source} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
                   {item.title}
                 </a>
               </h3>
