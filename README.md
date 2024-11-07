@@ -72,6 +72,6 @@ This project is designed to integrate with FastAPI in the future, which will pro
 - **Mock Data Creation**: AI assisted in creating mock data, simulating API responses for realistic testing and layout verification.
 
 ## Wireframe
-[Wireframe Figma](https://www.figma.com/board/xB3yScVV0C7HwKwjxudB1r/HappyNest-Frontend?node-id=0-1&t=QiYKWkOR1A8R7MgW-1)
+[Wireframe Figma](https://www.figma.com/board/xB3yScVV0C7HwKwjxudB1r/HappyNest-Frontend?node-id=0-1&t=iHWp1yUGLsD4MQ0U-1)
 
 ![HappyNest Wireframe](./WireFrame.png)
