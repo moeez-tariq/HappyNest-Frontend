@@ -74,3 +74,4 @@ This project is designed to integrate with FastAPI in the future, which will pro
 ## Wireframe
 
 ![HappyNest Wireframe](./WireFrame.png)
+![Wireframe Figma](https://www.figma.com/board/xB3yScVV0C7HwKwjxudB1r/HappyNest-Frontend?node-id=0-1&t=QiYKWkOR1A8R7MgW-1)
