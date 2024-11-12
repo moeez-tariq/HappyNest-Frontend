@@ -6,30 +6,31 @@ export default function NewsList({ lat, lon }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchNews = async () => {
+  const fetchNews = async () => {
       try {
-        const response = await fetch('/api/news', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ lat, lon }), // Send lat/lon in body
-        });
+      const response = await fetch('/api/news', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ lat, lon }), // Send lat/lon in body
+      });
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch news');
-        }
+      if (!response.ok) {
+        throw new Error('Failed to fetch news');
+      }
 
-        const data = await response.json();
+      const data = await response.json();
+      console.log(data);
         setNews(data);
       } catch (err) {
         setError('Error fetching happy news.');
       } finally {
         setLoading(false);
       }
-    };
+  };
 
+  useEffect(() => {
     if (lat && lon) {
       fetchNews();
     }

@@ -8,6 +8,10 @@ export default function Home() {
   const [location, setLocation] = useState(null);
 
   const handleLocationSuccess = async (lat, lon) => {
+    // fetch first gets new news and adds to database based on location
+    const res = await fetch(`http://localhost:8000/api/news/fetch`);
+    const {message} = await res.json();
+    console.log(message);
     setLocation({ lat, lon });
   };
 
