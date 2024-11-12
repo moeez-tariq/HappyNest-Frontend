@@ -3,20 +3,11 @@
 import { useState } from "react";
 import LocationRequest from "@/components/LocationRequest";
 import NewsList from "@/components/NewsList";
-import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function Home() {
   const [location, setLocation] = useState(null);
 
   const handleLocationSuccess = async (lat, lon) => {
-    console.log("Lat ", lat);
-    console.log("Long ", lon);
-    
-    const city = "New York";
-    const res = await fetch(`http://localhost:8000/api/news/fetch`);
-    const {message} = await res.json();
-    console.log(message);
-
     setLocation({ lat, lon });
   };
 

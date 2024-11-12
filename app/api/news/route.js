@@ -2,9 +2,7 @@ export async function POST(req) {
   try {  
     const response = await fetch("http://localhost:8000/api/news/city=New York");
     const {data} = await response.json();
-    // console.log(message);
-    // alert(message);
-
+    console.log(data);
     // Parse the request body to extract lat/lon (we're not using them for now)
     const { lat, lon } = await req.json();
     console.log(lat, lon);
