@@ -8,7 +8,15 @@ import LoadingSpinner from "@/components/LoadingSpinner";
 export default function Home() {
   const [location, setLocation] = useState(null);
 
-  const handleLocationSuccess = (lat, lon) => {
+  const handleLocationSuccess = async (lat, lon) => {
+    console.log("Lat ", lat);
+    console.log("Long ", lon);
+    
+    const city = "Boston";
+    const res = await fetch(`http://localhost:8000/api/news/city=${city}`);
+    const {message} = await res.json();
+    console.log(message);
+
     setLocation({ lat, lon });
   };
 
