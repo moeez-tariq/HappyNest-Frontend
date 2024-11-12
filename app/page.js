@@ -12,8 +12,8 @@ export default function Home() {
     console.log("Lat ", lat);
     console.log("Long ", lon);
     
-    const city = "Boston";
-    const res = await fetch(`http://localhost:8000/api/news/city=${city}`);
+    const city = "New York";
+    const res = await fetch(`http://localhost:8000/api/news/fetch`);
     const {message} = await res.json();
     console.log(message);
 

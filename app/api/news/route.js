@@ -1,6 +1,6 @@
 export async function POST(req) {
   try {  
-    const response = await fetch("http://localhost:8000/api/news/city=Boston");
+    const response = await fetch("http://localhost:8000/api/news/city=New York");
     const {data} = await response.json();
     // console.log(message);
     // alert(message);
