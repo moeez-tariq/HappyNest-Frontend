@@ -5,8 +5,8 @@ import {
   ClerkProvider,
   SignedIn,
   SignedOut,
-  SignInButton,
   UserButton,
+  SignInButton,
 } from "@clerk/nextjs";
 
 const geistSans = localFont({
@@ -32,14 +32,14 @@ export default function RootLayout({ children }) {
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <Navbar />
-          {/* Add User Button or SignIn/SignOut Components */}
-          <SignedOut>
-            {/* <SignInButton /> */}
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
+          <Navbar>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+            <SignedOut>
+              <SignInButton />
+            </SignedOut>
+          </Navbar>
           {children}
         </body>
       </html>
