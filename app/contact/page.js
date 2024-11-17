@@ -14,7 +14,7 @@ export default function Contact() {
 
   // Redirect to sign-in page if the user is not logged in
   if (!isSignedIn) {
-    router.push("/sign-in");
+    router.push("/");
     return null; // Return null while the redirect is happening
   }
 

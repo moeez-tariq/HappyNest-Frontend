@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { SignedIn, SignedOut } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs"; // Import SignInButton
 import LocationRequest from "@/components/LocationRequest";
 import NewsList from "@/components/NewsList";
 
@@ -37,11 +37,17 @@ export default function Home() {
         )}
       </SignedIn>
 
-      {/* Redirect to sign-in page if not signed in */}
+      {/* Show sign-in button if signed out */}
       <SignedOut>
-        <p className="text-lg">
-          Please <a href="/sign-in" className="text-primary underline">sign in</a> to get started.
+        <h1 className="text-4xl font-bold mb-6">Welcome to HappyNest</h1>
+        <p className="text-lg mb-6">
+          Sign in to get happy news in your area!
         </p>
+        <SignInButton afterSignInUrl="/">
+          <button className="px-6 py-3 bg-primary text-primary-foreground rounded-lg text-lg hover:bg-primary/90">
+            Sign In
+          </button>
+        </SignInButton>
       </SignedOut>
     </main>
   );
