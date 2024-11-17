@@ -76,3 +76,10 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .btn {
+    @apply px-6 py-3 bg-primary text-primary-foreground rounded-lg text-lg hover:bg-primary/90;
+  }
+}
+
