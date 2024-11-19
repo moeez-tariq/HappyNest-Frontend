@@ -1,13 +1,7 @@
 import localFont from "next/font/local";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import {
-  ClerkProvider,
-  SignedIn,
-  SignedOut,
-  UserButton,
-  SignInButton,
-} from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
+import Sidebar from "@/components/Sidebar";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -22,25 +16,22 @@ const geistMono = localFont({
 
 export const metadata = {
   title: "HappyNest",
-  description: "Get happy news in your area!",
+  description: "Spread positivity and share good deeds!",
 };
 
 export default function RootLayout({ children }) {
   return (
     <ClerkProvider dynamic={true} appearance={{ userButton: false }}>
-      <html lang="en">
+      <html lang="en" className="h-full">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased flex h-full overflow-hidden bg-gray-100`}
         >
-          <Navbar>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-            <SignedOut>
-              <SignInButton />
-            </SignedOut>
-          </Navbar>
-          {children}
+          <Sidebar />
+          <main className="flex-1 overflow-auto">
+            <div className="max-w-7xl mx-auto p-6">
+              {children}
+            </div>
+          </main>
         </body>
       </html>
     </ClerkProvider>
