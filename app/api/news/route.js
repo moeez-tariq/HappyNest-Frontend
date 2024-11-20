@@ -1,106 +1,42 @@
-// Mock news data
-// const mockNews = [
-//     {
-//         "title": "Incredible Rescue of Stranded Hikers",
-//         "content": "Read the full story at https://example.com/story1",
-//         "location": {
-//           "city": "Unknown",
-//           "state": "Unknown",
-//           "country": "USA"
-//         },
-//         "source": "Local News",
-//         "sentiment": "positive"
-//       },
-//       {
-//         "title": "Local Community Comes Together to Clean Up Park",
-//         "content": "Read the full story at https://example.com/story2",
-//         "location": {
-//           "city": "Unknown",
-//           "state": "Unknown",
-//           "country": "USA"
-//         },
-//         "source": "Local News",
-//         "sentiment": "positive"
-//       },
-//       {
-//         "title": "Uplifting Stories from the Pandemic",
-//         "content": "Read the full story at https://example.com/story3",
-//         "location": {
-//           "city": "Unknown",
-//           "state": "Unknown",
-//           "country": "USA"
-//         },
-//         "source": "Local News",
-//         "sentiment": "positive"
-//       },
-//       {
-//         "title": "Kind Stranger Pays for Family’s Groceries",
-//         "content": "Read the full story at https://example.com/story4",
-//         "location": {
-//           "city": "Unknown",
-//           "state": "Unknown",
-//           "country": "USA"
-//         },
-//         "source": "Local News",
-//         "sentiment": "positive"
-//       },
-//       {
-//         "title": "New Library Opens in Town",
-//         "content": "Read the full story at https://example.com/story5",
-//         "location": {
-//           "city": "Unknown",
-//           "state": "Unknown",
-//           "country": "USA"
-//         },
-//         "source": "Local News",
-//         "sentiment": "neutral"
-//       },
-//       {
-//         "title": "Local Teen Wins National Science Competition",
-//         "content": "Read the full story at https://example.com/story6",
-//         "location": {
-//           "city": "Unknown",
-//           "state": "Unknown",
-//           "country": "USA"
-//         },
-//         "source": "Local News",
-//         "sentiment": "positive"
-//       },
-//       {
-//         "title": "Firefighters Rescue Cat from Tree",
-//         "content": "Read the full story at https://example.com/story7",
-//         "location": {
-//           "city": "Unknown",
-//           "state": "Unknown",
-//           "country": "USA"
-//         },
-//         "source": "Local News",
-//         "sentiment": "positive"
-//       }
-// ];
-
-export async function POST(req) {
-  try {  
-    console.log("this runs");
-    const response = await fetch("http://localhost:8000/api/news/city=New York");
-    const {data} = await response.json();
-    // Parse the request body to extract lat/lon (we're not using them for now)
-    const { lat, lon } = await req.json();
-    console.log(lat, lon);
-
-    // Respond with mock news data
-    return new Response(JSON.stringify(data), {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-  } catch (error) {
-    return new Response(JSON.stringify({ error: 'Failed to fetch news ' }), {
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+export async function GET(req) {
+    try {
+      // Extract lat and lon from query parameters
+      const { searchParams } = new URL(req.url)
+      const lat = searchParams.get('lat')
+      const lon = searchParams.get('lon')
+  
+      // Ensure lat and lon are provided
+      if (!lat || !lon) {
+        return new Response(JSON.stringify({ error: 'Latitude and longitude are required' }), {
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+      }
+  
+      // Make request to Python backend
+      const response = await fetch(`http://localhost:8000/api/news/fetch?lat=${lat}&lon=${lon}`)
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      
+      const data = await response.json()
+  
+      return new Response(JSON.stringify(data), {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    } catch (error) {
+      console.error('Failed to fetch news:', error)
+      return new Response(JSON.stringify({ error: 'Failed to fetch news' }), {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    }
   }
-}
