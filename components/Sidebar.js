@@ -1,13 +1,16 @@
 'use client'
-
 import Link from 'next/link'
 import Image from 'next/image'
 import { Home, Info, Mail } from 'lucide-react'
 import { useAuth, SignInButton, UserButton, useUser } from "@clerk/nextjs"
+import { useSyncUser } from '@/hooks/useSyncUser' // Add this import
 
 export default function Sidebar() {
   const { isSignedIn } = useAuth()
   const { user } = useUser()
+  
+  // Add this hook to sync the user with your database
+  useSyncUser()
 
   return (
     <aside className="w-64 bg-white border-r p-4 flex-shrink-0 h-screen overflow-y-auto flex flex-col">
