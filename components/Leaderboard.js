@@ -2,8 +2,7 @@
 import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User, Trophy, Flame } from 'lucide-react';
-import { useSyncUser } from '@/hooks/useSyncUser';
+import { User, Trophy } from 'lucide-react';
 import { ScrollArea } from './ui/scroll-area';
 
 export default function Leaderboard() {
@@ -11,8 +10,6 @@ export default function Leaderboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
-  useSyncUser();
-
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {

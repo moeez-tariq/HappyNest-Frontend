@@ -3,13 +3,44 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Home, Info, Mail } from 'lucide-react'
 import { useAuth, SignInButton, UserButton, useUser } from "@clerk/nextjs"
-import { useSyncUser } from '@/hooks/useSyncUser' // Add this import
+import { useEffect } from 'react'
 
 export default function Sidebar() {
-  const { isSignedIn } = useAuth()
-  const { user } = useUser()
-  
-  useSyncUser()
+    const { isSignedIn } = useAuth()
+    const { user } = useUser()
+
+    useEffect(() => {
+    if (!isSignedIn || !user) return;
+
+    const syncUser = async () => {
+        try {
+        const response = await fetch('http://localhost:8000/api/users/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+            _id: user.id,
+            name: user.fullName,
+            email: user.emailAddresses[0].emailAddress,
+            streak: 0,
+            mood: "Hopeful",
+            location: {
+                city: "New York", // Could be made dynamic later
+                state: "New York",
+                country: "United States", 
+                coordinates: {
+                latitude: 40.7128,
+                longitude: -74.0060
+                }
+            }
+            })
+        });
+        } catch (err) {
+        console.error('Error syncing user:', err);
+        }
+    };
+
+    syncUser();
+    }, [isSignedIn, user]);
 
   return (
     <aside className="w-64 bg-white border-r p-4 flex-shrink-0 h-screen overflow-y-auto flex flex-col">
