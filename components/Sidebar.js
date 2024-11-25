@@ -9,7 +9,6 @@ export default function Sidebar() {
   const { isSignedIn } = useAuth()
   const { user } = useUser()
   
-  // Add this hook to sync the user with your database
   useSyncUser()
 
   return (

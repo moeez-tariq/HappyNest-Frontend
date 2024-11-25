@@ -9,7 +9,7 @@ export default function Home() {
       <div className="lg:w-2/3">
         <GoodDeedsFeed />
       </div>
-      <div className="lg:w-1/3 space-y-6">
+      <div className="lg:w-1/3 space-y-6 max-h-full">
         <NewsSidebar />
         <Leaderboard />
       </div>

@@ -20,6 +20,7 @@ const sortDeedsByDate = (deeds) => {
 export default function GoodDeedsFeed() {
   const { isSignedIn } = useAuth();
   const { user } = useUser();
+  const [users, setUsers] = useState();
   const [goodDeeds, setGoodDeeds] = useState([]);
   const [expandedDeed, setExpandedDeed] = useState(null);
   const [replyInputs, setReplyInputs] = useState({});
@@ -35,8 +36,6 @@ export default function GoodDeedsFeed() {
         throw new Error('Failed to fetch good deeds');
       }
       const data = await response.json();
-      // Add debug logging
-      console.log('Fetched good deeds with replies:', data);
       setGoodDeeds(sortDeedsByDate(data));
     } catch (err) {
       console.error('Error fetching good deeds:', err);
@@ -46,10 +45,44 @@ export default function GoodDeedsFeed() {
     }
   };
   
+  const fetchUsers = async (userIds) => {
+    try {
+      const response = await fetch('http://localhost:8000/api/users/');
+      const data = await response.json();
+      const userMap = {};
+      data.forEach(user => {
+        userMap[user.id] = user;
+      });
+      setUsers(userMap);
+    } catch (err) {
+      console.error('Error fetching users:', err);
+    }
+  };
 
   useEffect(() => {
     fetchGoodDeeds();
   }, []);
+
+  useEffect(() => {
+    if (goodDeeds.length > 0) {
+      const userIds = [...new Set(goodDeeds.map(deed => deed.user_id))];
+      fetchUsers(userIds);
+    }
+  }, [goodDeeds]);
+
+  const getUserInfo = (userId) => {
+    if (users) {
+        const dbUser = users[userId];
+        if (dbUser) {
+        return {
+            name: dbUser.name,
+            image: null, // Add image URL if you have it in your user data
+            mood: dbUser.mood
+        };
+        }
+    }
+    return null;
+  };
 
   const handleNewDeedSubmit = async () => {
     if (!isSignedIn || !newDeed.title || !newDeed.content) return;
@@ -205,12 +238,17 @@ export default function GoodDeedsFeed() {
                 </Avatar>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
-                    <p className="text-sm font-medium text-gray-900 truncate">
-                      {user && deed.user_id === user.id ? `@${user.username}` : "Anonymous User"}
-                    </p>
-                    <p className="text-xs text-gray-500">
+                      <p className="text-sm font-medium text-gray-900 truncate">
+                      {getUserInfo(deed.user_id)?.name || "Anonymous User"}
+                      {getUserInfo(deed.user_id)?.mood && (
+                          <span className="ml-2 text-xs text-gray-500">
+                          Feeling: {getUserInfo(deed.user_id).mood}
+                          </span>
+                      )}
+                      </p>
+                      <p className="text-xs text-gray-500">
                       {new Date(deed.completed_at).toLocaleDateString()}
-                    </p>
+                      </p>
                   </div>
                   <h3 className="text-lg font-semibold mt-1">{deed.title}</h3>
                   {/* Changed from content to description */}
@@ -256,10 +294,12 @@ export default function GoodDeedsFeed() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center">
                           <span className="text-sm font-medium text-gray-900 truncate">
-                            {user && reply.user_id === user.id ? `@${user.username}` : "Anonymous User"}
-                          </span>
-                          <span className="text-xs text-gray-500 ml-2">
-                            {new Date(reply.created_at).toLocaleDateString()}
+                              {getUserInfo(reply.user_id)?.name || "Anonymous User"}
+                              {getUserInfo(reply.user_id)?.mood && (
+                              <span className="ml-2 text-xs text-gray-500">
+                                  Feeling: {getUserInfo(reply.user_id).mood}
+                              </span>
+                              )}
                           </span>
                         </div>
                         <p className="text-sm text-gray-700 mt-1">{reply.content}</p>

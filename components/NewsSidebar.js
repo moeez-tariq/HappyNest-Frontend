@@ -2,29 +2,36 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Switch } from "@/components/ui/switch";
+import { Globe } from "lucide-react";
+
+const truncateWords = (text, limit = 20) => {
+    const words = text.split(' ');
+    if (words.length <= limit) return text;
+    return words.slice(0, limit).join(' ') + '...';
+};
 
 export default function NewsSidebar({ initialLat = 40.7128, initialLon = -74.0060 }) {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [useLocalNews, setUseLocalNews] = useState(false);
 
   const fetchNews = async (lat, lon) => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:8000/api/news/fetch?lat=${lat}&lon=${lon}`);
+      const url = useLocalNews 
+        ? `http://localhost:8000/api/news/fetch?lat=${lat}&lon=${lon}`
+        : 'http://localhost:8000/api/news';
+      
+      const response = await fetch(url);
 
       if (!response.ok) {
         throw new Error('Failed to fetch news');
       }
 
-      // Log the raw response for debugging
       const rawData = await response.json();
-      console.log('Raw API response:', rawData);
-
-      // If the response is wrapped in a data property, extract it
       const newsData = Array.isArray(rawData) ? rawData : rawData.data || [];
-      console.log('Processed news data:', newsData);
-      
       setNews(newsData);
     } catch (err) {
       console.error('Error fetching news:', err);
@@ -35,12 +42,9 @@ export default function NewsSidebar({ initialLat = 40.7128, initialLon = -74.006
   };
 
   useEffect(() => {
-    // Get user's location or use initial coordinates
-    if ("geolocation" in navigator) {
+    if (useLocalNews && "geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
-          fetchNews(position.coords.latitude, position.coords.longitude);
-        },
+        (position) => fetchNews(position.coords.latitude, position.coords.longitude),
         (error) => {
           console.warn("Error getting location:", error);
           fetchNews(initialLat, initialLon);
@@ -49,13 +53,17 @@ export default function NewsSidebar({ initialLat = 40.7128, initialLon = -74.006
     } else {
       fetchNews(initialLat, initialLon);
     }
-  }, [initialLat, initialLon]);
+  }, [initialLat, initialLon, useLocalNews]);
 
   if (loading) {
     return (
       <div className="bg-white shadow-sm rounded-lg overflow-hidden w-full flex flex-col">
-        <div className="border-b p-4">
+        <div className="border-b p-4 flex justify-between items-center">
           <h2 className="text-xl font-semibold">News</h2>
+          <div className="flex items-center gap-2">
+            <Globe className="h-4 w-4" />
+            <Switch checked={useLocalNews} onCheckedChange={setUseLocalNews} />
+          </div>
         </div>
         <div className="p-4 text-center">Loading news...</div>
       </div>
@@ -65,8 +73,12 @@ export default function NewsSidebar({ initialLat = 40.7128, initialLon = -74.006
   if (error) {
     return (
       <div className="bg-white shadow-sm rounded-lg overflow-hidden w-full flex flex-col">
-        <div className="border-b p-4">
+        <div className="border-b p-4 flex justify-between items-center">
           <h2 className="text-xl font-semibold">News</h2>
+          <div className="flex items-center gap-2">
+            <Globe className="h-4 w-4" />
+            <Switch checked={useLocalNews} onCheckedChange={setUseLocalNews} />
+          </div>
         </div>
         <div className="p-4 text-center text-red-500">{error}</div>
       </div>
@@ -74,38 +86,38 @@ export default function NewsSidebar({ initialLat = 40.7128, initialLon = -74.006
   }
 
   return (
-    <div className="bg-white shadow-sm rounded-lg overflow-hidden w-full flex flex-col">
-      <div className="border-b p-4">
+    <div className="bg-white shadow-sm rounded-lg overflow-hidden w-full flex flex-col h-[30.5rem]">
+      <div className="border-b p-4 flex justify-between items-center">
         <h2 className="text-xl font-semibold">News</h2>
+        <div className="flex items-center gap-2">
+          <Globe className="h-4 w-4" />
+          <Switch checked={useLocalNews} onCheckedChange={setUseLocalNews} />
+        </div>
       </div>
-      <ScrollArea className="flex-grow" style={{ height: 'calc(3 * 9rem)' }}>
+      <ScrollArea className="flex-grow">
         <div className="p-4 space-y-4">
           {news && news.length > 0 ? (
             news.map((item) => (
-              <Card key={item.id || Math.random()} className="overflow-hidden">
-                <CardHeader className="p-3">
-                  <CardTitle className="text-sm font-medium line-clamp-2">
+                <Card key={item.id || Math.random()} className="overflow-hidden hover:bg-gray-50 transition-colors max-w-[22rem]">
+                <div className="p-3">
+                  <a 
+                    href={item.source} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-sm font-medium mb-1 line-clamp-2 break-words hover:text-blue-600 transition-colors"
+                  >
                     {item.title}
-                  </CardTitle>
-                  <p className="text-xs text-gray-500">
-                    {item.published_at ? new Date(item.published_at).toLocaleDateString() : 'No date'}
+                  </a>
+                  <p className="text-xs text-gray-700 mb-2 break-words whitespace-normal mt-1">
+                    {truncateWords(item.content)}
                   </p>
-                </CardHeader>
-                <CardContent className="p-3 pt-0">
-                  <p className="text-xs text-gray-700 line-clamp-3">
-                    {item.content}
-                  </p>
-                  {item.location?.city && (
-                    <div className="mt-2 text-xs text-gray-500">
-                      📍 {item.location.city}
+                  <div className="flex items-center justify-between text-xs text-gray-500 flex-wrap gap-1">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      {item.location?.city && <span>📍 {item.location.city}</span>}
                     </div>
-                  )}
-                  {item.source && (
-                    <div className="mt-1 text-xs text-gray-500">
-                      Source: {item.source}
-                    </div>
-                  )}
-                </CardContent>
+                    <span>{item.published_at ? new Date(item.published_at).toLocaleDateString() : 'No date'}</span>
+                  </div>
+                </div>
               </Card>
             ))
           ) : (
