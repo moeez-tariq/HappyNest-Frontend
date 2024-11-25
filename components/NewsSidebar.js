@@ -1,9 +1,10 @@
 'use client';
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
-import { Globe } from "lucide-react";
+import { Globe, MapPin } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const truncateWords = (text, limit = 20) => {
     const words = text.split(' ');
@@ -16,6 +17,61 @@ export default function NewsSidebar({ initialLat = 40.7128, initialLon = -74.006
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [useLocalNews, setUseLocalNews] = useState(false);
+  const [hasLocationPermission, setHasLocationPermission] = useState(false);
+  const { toast } = useToast();
+
+  const checkLocationPermission = async () => {
+    if ("geolocation" in navigator) {
+      try {
+        const permission = await navigator.permissions.query({ name: 'geolocation' });
+        setHasLocationPermission(permission.state === 'granted');
+        
+        // Listen for permission changes
+        permission.addEventListener('change', (e) => {
+          setHasLocationPermission(e.target.state === 'granted');
+          if (e.target.state !== 'granted' && useLocalNews) {
+            setUseLocalNews(false);
+            toast({
+              title: "Location Access Required",
+              description: "Local news requires location access. Please enable location services to use this feature.",
+              variant: "destructive",
+            });
+          }
+        });
+      } catch (error) {
+        console.warn("Error checking location permission:", error);
+        setHasLocationPermission(false);
+      }
+    } else {
+      setHasLocationPermission(false);
+    }
+  };
+
+  const handleLocalNewsToggle = async (checked) => {
+    if (checked && !hasLocationPermission) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setHasLocationPermission(true);
+          setUseLocalNews(true);
+        },
+        (error) => {
+          console.warn("Error getting location:", error);
+          toast({
+            title: "Location Access Required",
+            description: "Please enable location services to see local news.",
+            variant: "destructive",
+          });
+          setUseLocalNews(false);
+        }
+      );
+    } else {
+      setUseLocalNews(checked);
+    }
+  };
+
+  useEffect(() => {
+    checkLocationPermission();
+  }, []);
 
   const fetchNews = async (lat, lon) => {
     try {
@@ -42,11 +98,19 @@ export default function NewsSidebar({ initialLat = 40.7128, initialLon = -74.006
   };
 
   useEffect(() => {
-    if (useLocalNews && "geolocation" in navigator) {
+    if (useLocalNews) {
       navigator.geolocation.getCurrentPosition(
         (position) => fetchNews(position.coords.latitude, position.coords.longitude),
         (error) => {
           console.warn("Error getting location:", error);
+          // No need to fallback to initialLat/initialLon since we prevent 
+          // useLocalNews from being true without permission
+          setUseLocalNews(false);
+          toast({
+            title: "Location Error",
+            description: "Could not get your location. Showing general news instead.",
+            variant: "destructive",
+          });
           fetchNews(initialLat, initialLon);
         }
       );
@@ -61,8 +125,8 @@ export default function NewsSidebar({ initialLat = 40.7128, initialLon = -74.006
         <div className="border-b p-4 flex justify-between items-center">
           <h2 className="text-xl font-semibold">News</h2>
           <div className="flex items-center gap-2">
-            <Globe className="h-4 w-4" />
-            <Switch checked={useLocalNews} onCheckedChange={setUseLocalNews} />
+            <MapPin className={`h-4 w-4 ${hasLocationPermission ? 'text-green-500' : 'text-gray-400'}`} />
+            <Switch checked={useLocalNews} onCheckedChange={handleLocalNewsToggle} />
           </div>
         </div>
         <div className="p-4 text-center">Loading news...</div>
@@ -76,8 +140,8 @@ export default function NewsSidebar({ initialLat = 40.7128, initialLon = -74.006
         <div className="border-b p-4 flex justify-between items-center">
           <h2 className="text-xl font-semibold">News</h2>
           <div className="flex items-center gap-2">
-            <Globe className="h-4 w-4" />
-            <Switch checked={useLocalNews} onCheckedChange={setUseLocalNews} />
+            <MapPin className={`h-4 w-4 ${hasLocationPermission ? 'text-green-500' : 'text-gray-400'}`} />
+            <Switch checked={useLocalNews} onCheckedChange={handleLocalNewsToggle} />
           </div>
         </div>
         <div className="p-4 text-center text-red-500">{error}</div>
@@ -90,8 +154,8 @@ export default function NewsSidebar({ initialLat = 40.7128, initialLon = -74.006
       <div className="border-b p-4 flex justify-between items-center">
         <h2 className="text-xl font-semibold">News</h2>
         <div className="flex items-center gap-2">
-          <Globe className="h-4 w-4" />
-          <Switch checked={useLocalNews} onCheckedChange={setUseLocalNews} />
+          <MapPin className={`h-4 w-4 ${hasLocationPermission ? 'text-green-500' : 'text-gray-400'}`} />
+          <Switch checked={useLocalNews} onCheckedChange={handleLocalNewsToggle} />
         </div>
       </div>
       <ScrollArea className="flex-grow">
