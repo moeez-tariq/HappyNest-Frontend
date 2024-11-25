@@ -28,6 +28,7 @@ export default function GoodDeedsFeed() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const fetchGoodDeeds = async () => {
     try {
@@ -117,6 +118,7 @@ export default function GoodDeedsFeed() {
       console.error('Error creating good deed:', err);
     } finally {
       setIsSubmitting(false);
+      setDialogOpen(false);
     }
   };
 
@@ -166,7 +168,7 @@ export default function GoodDeedsFeed() {
     <div className="bg-white shadow-sm rounded-lg overflow-hidden">
       <div className="border-b p-4 flex justify-between items-center">
         <h2 className="text-2xl font-bold">Good Deeds</h2>
-        <Dialog>
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           {!isSignedIn ? (
             <SignInButton mode="modal">
               <Button variant="ghost" size="icon">
