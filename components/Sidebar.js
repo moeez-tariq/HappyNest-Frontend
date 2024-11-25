@@ -2,11 +2,12 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Home, Info, Mail } from 'lucide-react'
-import { useAuth, SignInButton, UserButton, useUser } from "@clerk/nextjs"
+import { useAuth, SignInButton, UserButton, useUser, useClerk } from "@clerk/nextjs"
 import { useEffect } from 'react'
 
 export default function Sidebar() {
     const { isSignedIn } = useAuth()
+    const { openUserProfile } = useClerk();
     const { user } = useUser()
 
     useEffect(() => {
@@ -55,7 +56,7 @@ export default function Sidebar() {
           <li>
             <Link href="/" className="flex items-center space-x-2 text-gray-700 hover:text-blue-500">
               <Home size={20} />
-              <span>News</span>
+              <span>Feed</span>
             </Link>
           </li>
           <li>
@@ -74,7 +75,7 @@ export default function Sidebar() {
       </nav>
       <div className="mt-auto">
         {isSignedIn && user ? (
-          <div className="flex items-center space-x-3 p-2 border rounded-lg">
+          <div className="flex items-center space-x-3 p-2 border rounded-lg cursor-pointer" onClick={openUserProfile}>
             <UserButton afterSignOutUrl="/" />
             <div>
               <p className="font-semibold text-sm">{user.fullName}</p>

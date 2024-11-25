@@ -36,7 +36,7 @@ export default function Leaderboard() {
         <CardHeader>
           <CardTitle className="flex items-center text-lg">
             <Trophy className="mr-2 h-5 w-5" />
-            Leaderboard
+            Good Deed Leaderboard
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -52,7 +52,7 @@ export default function Leaderboard() {
         <CardHeader>
           <CardTitle className="flex items-center text-lg">
             <Trophy className="mr-2 h-5 w-5" />
-            Leaderboard
+            Good Deed Leaderboard
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -67,7 +67,7 @@ export default function Leaderboard() {
       <CardHeader>
         <CardTitle className="flex items-center text-lg">
           <Trophy className="mr-2 h-5 w-5" />
-          Leaderboard
+          Good Deed Leaderboard
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0">
