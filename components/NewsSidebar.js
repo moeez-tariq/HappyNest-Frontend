@@ -129,7 +129,7 @@ export default function NewsSidebar({ initialLat = 40.7128, initialLon = -74.006
             <Switch checked={useLocalNews} onCheckedChange={handleLocalNewsToggle} />
           </div>
         </div>
-        <div className="p-4 text-center">Loading news...</div>
+        <div className="p-4 text-center">{useLocalNews ? 'Getting local news...' : 'Loading news...'}</div>
       </div>
     );
   }

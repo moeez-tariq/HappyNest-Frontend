@@ -30,9 +30,6 @@ export default function About() {
         In a world filled with constant news cycles, we believe that it’s important to take a moment to appreciate the good things happening around us. 
         Whether it's a heartwarming local story or an inspiring global event, HappyNest is here to brighten your day.
       </p>
-      <p className="text-lg">
-        Click "Get Local Happy News" on our homepage to discover feel-good stories happening near you!
-      </p>
     </main>
   );
 }
