@@ -2,45 +2,53 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Home, Info, Mail } from 'lucide-react'
-import { useAuth, SignInButton, UserButton, useUser, useClerk } from "@clerk/nextjs"
+import { useAuth, SignInButton, UserButton, useUser } from "@clerk/nextjs"
 import { useEffect } from 'react'
 
 export default function Sidebar() {
     const { isSignedIn } = useAuth()
-    const { openUserProfile } = useClerk();
     const { user } = useUser()
 
-    useEffect(() => {
-    if (!isSignedIn || !user) return;
-
-    const syncUser = async () => {
-        try {
-        const response = await fetch('http://localhost:8000/api/users/', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-            _id: user.id,
-            name: user.fullName,
-            email: user.emailAddresses[0].emailAddress,
-            streak: 0,
-            mood: "Hopeful",
-            location: {
-                city: "New York", // Could be made dynamic later
-                state: "New York",
-                country: "United States", 
-                coordinates: {
-                latitude: 40.7128,
-                longitude: -74.0060
-                }
-            }
-            })
-        });
-        } catch (err) {
-        console.error('Error syncing user:', err);
+    const handleUserButtonClick = () => {
+        const userButtonContainer = document.getElementById('clerk-user-button');
+        if (userButtonContainer) {
+            const button = userButtonContainer.querySelector('button');
+            if (button) button.click();
         }
     };
 
-    syncUser();
+    useEffect(() => {
+        if (!isSignedIn || !user) return;
+
+        const syncUser = async () => {
+            try {
+            const response = await fetch('http://localhost:8000/api/users/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                _id: user.id,
+                name: user.fullName,
+                email: user.emailAddresses[0].emailAddress,
+                password: 'clerk-auth',
+                streak: 0,
+                mood: "Hopeful",
+                location: {
+                    city: "New York", // Could be made dynamic later
+                    state: "New York",
+                    country: "United States", 
+                    coordinates: {
+                    latitude: 40.7128,
+                    longitude: -74.0060
+                    }
+                }
+                })
+            });
+            } catch (err) {
+            console.error('Error syncing user:', err);
+            }
+        };
+
+        syncUser();
     }, [isSignedIn, user]);
 
   return (
@@ -75,8 +83,10 @@ export default function Sidebar() {
       </nav>
       <div className="mt-auto">
         {isSignedIn && user ? (
-          <div className="flex items-center space-x-3 p-2 border rounded-lg cursor-pointer" onClick={openUserProfile}>
-            <UserButton afterSignOutUrl="/" />
+          <div className="flex items-center space-x-3 p-2 border rounded-lg cursor-pointer hover:bg-gray-50" onClick={handleUserButtonClick}>
+            <div id="clerk-user-button">
+                <UserButton afterSignOutUrl="/" />
+            </div>
             <div>
               <p className="font-semibold text-sm">{user.fullName}</p>
               <p className="text-xs text-gray-500">@{user.username}</p>
