@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
-import { Globe, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const truncateWords = (text, limit = 20) => {
@@ -162,7 +162,7 @@ export default function NewsSidebar({ initialLat = 40.7128, initialLon = -74.006
         <div className="p-4 space-y-4">
           {news && news.length > 0 ? (
             news.map((item) => (
-                <Card key={item.id || Math.random()} className="overflow-hidden hover:bg-gray-50 transition-colors max-w-[22rem]">
+                <Card key={item.id || Math.random()} className="overflow-hidden hover:bg-gray-50 transition-colors ">
                 <div className="p-3">
                   <a 
                     href={item.source} 
