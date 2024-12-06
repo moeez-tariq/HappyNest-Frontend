@@ -9,6 +9,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { ChevronDown, ChevronUp, MessageSquare, Send, Edit, User } from 'lucide-react'
 import { useAuth, useUser, SignInButton } from "@clerk/nextjs"
 
+const API_ROUTE = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 const sortDeedsByDate = (deeds) => {
   return [...deeds].sort((a, b) => {
     const dateA = new Date(a.completed_at || a.created_at);
@@ -32,7 +34,7 @@ export default function GoodDeedsFeed() {
 
   const fetchGoodDeeds = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/good-deeds/');
+      const response = await fetch(`${API_ROUTE}/api/good-deeds/`);
       if (!response.ok) {
         throw new Error('Failed to fetch good deeds');
       }
@@ -48,7 +50,7 @@ export default function GoodDeedsFeed() {
   
   const fetchUsers = async (userIds) => {
     try {
-      const response = await fetch('http://localhost:8000/api/users/');
+      const response = await fetch(`${API_ROUTE}/api/users/`);
       const data = await response.json();
       const userMap = {};
       data.forEach(user => {
@@ -99,7 +101,7 @@ export default function GoodDeedsFeed() {
         replies: [] // Empty array for new deed
       };
 
-      const response = await fetch('http://localhost:8000/api/good-deeds/', {
+      const response = await fetch(`${API_ROUTE}/api/good-deeds/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -132,7 +134,7 @@ export default function GoodDeedsFeed() {
         content: replyInputs[deedId]
       };
   
-      const response = await fetch(`http://localhost:8000/api/good-deeds/${deedId}/replies/`, {
+      const response = await fetch(`${API_ROUTE}/api/good-deeds/${deedId}/replies/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

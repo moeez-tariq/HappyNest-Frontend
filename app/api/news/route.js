@@ -1,3 +1,5 @@
+const API_ROUTE = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export async function GET(req) {
     try {
       // Extract lat and lon from query parameters
@@ -16,7 +18,7 @@ export async function GET(req) {
       }
   
       // Make request to Python backend
-      const response = await fetch(`http://localhost:8000/api/news/fetch?lat=${lat}&lon=${lon}`)
+      const response = await fetch(`${API_ROUTE}/api/news/fetch?lat=${lat}&lon=${lon}`)
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)

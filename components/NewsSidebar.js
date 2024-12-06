@@ -6,6 +6,8 @@ import { Switch } from "@/components/ui/switch";
 import { MapPin } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
+const API_ROUTE = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 const truncateWords = (text, limit = 20) => {
     const words = text.split(' ');
     if (words.length <= limit) return text;
@@ -77,8 +79,10 @@ export default function NewsSidebar({ initialLat = 40.7128, initialLon = -74.006
     try {
       setLoading(true);
       const url = useLocalNews 
-        ? `http://localhost:8000/api/news/fetch?lat=${lat}&lon=${lon}`
-        : 'http://localhost:8000/api/news';
+        ? `${API_ROUTE}/api/news/fetch?lat=${lat}&lon=${lon}`
+        : `${API_ROUTE}/api/news`;
+
+     console.log(url);
       
       const response = await fetch(url);
 

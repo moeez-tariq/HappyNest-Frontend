@@ -5,6 +5,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User, Trophy } from 'lucide-react';
 import { ScrollArea } from './ui/scroll-area';
 
+const API_ROUTE = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default function Leaderboard() {
   const [leaders, setLeaders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,7 +15,7 @@ export default function Leaderboard() {
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/leaderboard/');
+        const response = await fetch(`${API_ROUTE}/api/leaderboard/`);
         if (!response.ok) {
           throw new Error('Failed to fetch leaderboard');
         }

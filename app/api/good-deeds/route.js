@@ -1,6 +1,8 @@
+const API_ROUTE = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export async function GET(req) {
     try {
-      const response = await fetch('http://localhost:8000/api/good-deeds/');
+      const response = await fetch(`${API_ROUTE}/api/good-deeds/`);
       const data = await response.json();
   
       return new Response(JSON.stringify(data), {
@@ -24,7 +26,7 @@ export async function GET(req) {
     try {
       const deedData = await req.json();
       
-      const response = await fetch('http://localhost:8000/api/good-deeds/', {
+      const response = await fetch(`${API_ROUTE}/api/good-deeds/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

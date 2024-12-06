@@ -5,6 +5,8 @@ import { Home, Info, Mail } from 'lucide-react'
 import { useAuth, SignInButton, UserButton, useUser } from "@clerk/nextjs"
 import { useEffect } from 'react'
 
+const API_ROUTE = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default function Sidebar() {
     const { isSignedIn } = useAuth()
     const { user } = useUser()
@@ -22,7 +24,7 @@ export default function Sidebar() {
 
         const syncUser = async () => {
             try {
-            const response = await fetch('http://localhost:8000/api/users/', {
+            const response = await fetch(`${API_ROUTE}/api/users/`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
