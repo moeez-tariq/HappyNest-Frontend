@@ -5,6 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
 import { MapPin } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { redirect } from "next/dist/server/api-utils";
 
 const API_ROUTE = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -84,7 +85,7 @@ export default function NewsSidebar({ initialLat = 40.7128, initialLon = -74.006
 
      console.log(url);
       
-      const response = await fetch(url);
+      const response = await fetch(url, {redirect: 'follow'});
 
       if (!response.ok) {
         throw new Error('Failed to fetch news');
