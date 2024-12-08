@@ -9,8 +9,8 @@ This project communicates with a FastAPI api for its backend and the relevant ro
 ## Component Documentation
 
 1. **Navbar**
-   - Links to each of the various pages in the application.
-
+   - Links to each of the various pages in the application
+   
 2. **News Page**
    - Displays good news and updates and redirects users to the full article.
 
