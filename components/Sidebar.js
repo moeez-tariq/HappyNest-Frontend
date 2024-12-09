@@ -69,18 +69,6 @@ export default function Sidebar() {
               <span>Feed</span>
             </Link>
           </li>
-          <li>
-            <Link href="/about" className="flex items-center space-x-2 text-gray-700 hover:text-blue-500">
-              <Info size={20} />
-              <span>About</span>
-            </Link>
-          </li>
-          <li>
-            <Link href="/contact" className="flex items-center space-x-2 text-gray-700 hover:text-blue-500">
-              <Mail size={20} />
-              <span>Contact</span>
-            </Link>
-          </li>
         </ul>
       </nav>
       <div className="mt-auto">
