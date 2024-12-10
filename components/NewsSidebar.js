@@ -99,7 +99,7 @@ export default function NewsSidebar({ initialLat = 40.7128, initialLon = -74.006
     try {
       setLoading(true);
       const url = useLocalNews 
-        ? `${API_ROUTE}/api/news/fetch?lat=${lat}&lon=${lon}`
+        ? `${API_ROUTE}/api/news/location?lat=${lat}&lon=${lon}`  // Changed from /fetch to /location
         : `${API_ROUTE}/api/news`;
       
       const response = await fetch(url, {redirect: 'follow'});
@@ -119,7 +119,7 @@ export default function NewsSidebar({ initialLat = 40.7128, initialLon = -74.006
     } finally {
       setLoading(false);
     }
-  };
+};
 
   useEffect(() => {
     if (useLocalNews) {
