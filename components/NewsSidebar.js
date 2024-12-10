@@ -1,10 +1,10 @@
-'use client';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
-import { MapPin } from "lucide-react";
+import { MapPin, Volume2, VolumeX } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
 
 const API_ROUTE = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -20,6 +20,9 @@ export default function NewsSidebar({ initialLat = 40.7128, initialLon = -74.006
   const [error, setError] = useState(null);
   const [useLocalNews, setUseLocalNews] = useState(false);
   const [hasLocationPermission, setHasLocationPermission] = useState(false);
+  const [audioUrl, setAudioUrl] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(null);
   const { toast } = useToast();
 
   const checkLocationPermission = async () => {
@@ -28,7 +31,6 @@ export default function NewsSidebar({ initialLat = 40.7128, initialLon = -74.006
         const permission = await navigator.permissions.query({ name: 'geolocation' });
         setHasLocationPermission(permission.state === 'granted');
         
-        // Listen for permission changes
         permission.addEventListener('change', (e) => {
           setHasLocationPermission(e.target.state === 'granted');
           if (e.target.state !== 'granted' && useLocalNews) {
@@ -71,6 +73,24 @@ export default function NewsSidebar({ initialLat = 40.7128, initialLon = -74.006
     }
   };
 
+  const toggleAudio = () => {
+    if (!audioRef.current) return;
+    
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play().catch(error => {
+        console.error('Error playing audio:', error);
+        toast({
+          title: "Playback Error",
+          description: "Could not play the audio news summary.",
+          variant: "destructive",
+        });
+      });
+    }
+    setIsPlaying(!isPlaying);
+  };
+
   useEffect(() => {
     checkLocationPermission();
   }, []);
@@ -81,8 +101,6 @@ export default function NewsSidebar({ initialLat = 40.7128, initialLon = -74.006
       const url = useLocalNews 
         ? `${API_ROUTE}/api/news/fetch?lat=${lat}&lon=${lon}`
         : `${API_ROUTE}/api/news`;
-
-     console.log(url);
       
       const response = await fetch(url, {redirect: 'follow'});
 
@@ -90,9 +108,11 @@ export default function NewsSidebar({ initialLat = 40.7128, initialLon = -74.006
         throw new Error('Failed to fetch news');
       }
 
-      const rawData = await response.json();
-      const newsData = Array.isArray(rawData) ? rawData : rawData.data || [];
-      setNews(newsData);
+      const data = await response.json();
+      setNews(data.news || []);
+      if (data.audio) {
+        setAudioUrl(data.audio);
+      }
     } catch (err) {
       console.error('Error fetching news:', err);
       setError('Failed to load news');
@@ -107,8 +127,6 @@ export default function NewsSidebar({ initialLat = 40.7128, initialLon = -74.006
         (position) => fetchNews(position.coords.latitude, position.coords.longitude),
         (error) => {
           console.warn("Error getting location:", error);
-          // No need to fallback to initialLat/initialLon since we prevent 
-          // useLocalNews from being true without permission
           setUseLocalNews(false);
           toast({
             title: "Location Error",
@@ -156,7 +174,23 @@ export default function NewsSidebar({ initialLat = 40.7128, initialLon = -74.006
   return (
     <div className="bg-white shadow-sm rounded-lg overflow-hidden w-full flex flex-col h-[30.5rem]">
       <div className="border-b p-4 flex justify-between items-center">
-        <h2 className="text-xl font-semibold">News</h2>
+        <div className="flex items-center gap-4">
+          <h2 className="text-xl font-semibold">News</h2>
+          {audioUrl && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="p-2"
+              onClick={toggleAudio}
+            >
+              {isPlaying ? (
+                <VolumeX className="h-4 w-4 text-gray-600" />
+              ) : (
+                <Volume2 className="h-4 w-4 text-gray-600" />
+              )}
+            </Button>
+          )}
+        </div>
         <div className="flex items-center gap-2">
           <MapPin className={`h-4 w-4 ${hasLocationPermission ? 'text-green-500' : 'text-gray-400'}`} />
           <Switch checked={useLocalNews} onCheckedChange={handleLocalNewsToggle} />
@@ -166,7 +200,7 @@ export default function NewsSidebar({ initialLat = 40.7128, initialLon = -74.006
         <div className="p-4 space-y-4">
           {news && news.length > 0 ? (
             news.map((item) => (
-                <Card key={item.id || Math.random()} className="overflow-hidden hover:bg-gray-50 transition-colors ">
+              <Card key={item.id || Math.random()} className="overflow-hidden hover:bg-gray-50 transition-colors">
                 <div className="p-3">
                   <a 
                     href={item.source} 
@@ -193,6 +227,21 @@ export default function NewsSidebar({ initialLat = 40.7128, initialLon = -74.006
           )}
         </div>
       </ScrollArea>
+      {audioUrl && (
+        <audio
+          ref={audioRef}
+          src={audioUrl}
+          onEnded={() => setIsPlaying(false)}
+          onError={() => {
+            setIsPlaying(false);
+            toast({
+              title: "Audio Error",
+              description: "Could not load the audio news summary.",
+              variant: "destructive",
+            });
+          }}
+        />
+      )}
     </div>
   );
 }

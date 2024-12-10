@@ -244,11 +244,6 @@ export default function GoodDeedsFeed() {
                   <div className="flex items-center justify-between">
                       <p className="text-sm font-medium text-gray-900 truncate">
                       {getUserInfo(deed.user_id)?.name || "Anonymous User"}
-                      {getUserInfo(deed.user_id)?.mood && (
-                          <span className="ml-2 text-xs text-gray-500">
-                          Feeling: {getUserInfo(deed.user_id).mood}
-                          </span>
-                      )}
                       </p>
                       <p className="text-xs text-gray-500">
                       {new Date(deed.completed_at).toLocaleDateString()}
@@ -299,11 +294,6 @@ export default function GoodDeedsFeed() {
                         <div className="flex items-center">
                           <span className="text-sm font-medium text-gray-900 truncate">
                               {getUserInfo(reply.user_id)?.name || "Anonymous User"}
-                              {getUserInfo(reply.user_id)?.mood && (
-                              <span className="ml-2 text-xs text-gray-500">
-                                  Feeling: {getUserInfo(reply.user_id).mood}
-                              </span>
-                              )}
                           </span>
                         </div>
                         <p className="text-sm text-gray-700 mt-1">{reply.content}</p>

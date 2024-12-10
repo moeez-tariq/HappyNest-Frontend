@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { User, Trophy } from 'lucide-react';
 import { ScrollArea } from './ui/scroll-area';
 
@@ -93,11 +93,6 @@ export default function Leaderboard() {
                     <p className="text-sm font-medium flex items-center gap-2">
                       {leader.name}
                     </p>
-                    {leader.mood && (
-                      <p className="text-xs text-gray-500">
-                        Feeling: {leader.mood}
-                      </p>
-                    )}
                   </div>
                 </div>
                 <div className="text-sm font-medium">
