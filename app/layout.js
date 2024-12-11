@@ -18,6 +18,9 @@ const geistMono = localFont({
 export const metadata = {
   title: "HappyNest",
   description: "Spread positivity and share good deeds!",
+  icons: {
+    icon: '/images/logo.png'
+  }
 };
 
 export default function RootLayout({ children }) {
