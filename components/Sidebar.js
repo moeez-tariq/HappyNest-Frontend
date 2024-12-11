@@ -68,14 +68,14 @@ export default function Sidebar() {
                         email: user.emailAddresses[0].emailAddress,
                         password: 'clerk-auth',
                         streak: 0,
-                        mood: "Hopeful",
+                        mood: "Happy", // info past here is not used right now, so we just put in regular data
                         location: {
-                            city: "New York",
-                            state: "New York",
-                            country: "United States",
+                            city: "Hidden",
+                            state: "Hidden",
+                            country: "Hidden",
                             coordinates: {
-                                latitude: 40.7128,
-                                longitude: -74.0060
+                                latitude: -1,
+                                longitude: -1
                             }
                         }
                     })
