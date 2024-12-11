@@ -6,6 +6,8 @@
 
 This project communicates with a FastAPI api for its backend and the relevant routes that we hit are documented in that repository's [README](https://github.com/moeez-tariq/HappyNest).
 
+Note: For the [live version](https://happynest-kappa.vercel.app/), the app works more reliably on safari, but should work on Chrome too. The app uses caching so we would recommend starting in incognito mode. Especially when testing different locations, select the location before clicking the switch.
+
 ## Component Documentation
 
 1. **Sidebar**
