@@ -4,7 +4,7 @@
 
 *HappyNest* is a community-focused web application built using React and MongoDB. The app aims to encourage users to engage in positive social actions by allowing them to share and interact with content around good deeds, community news, and relevant updates. Currently, the project includes sections for news, about, and contact information. Future updates will include a *Good Deed of the Day* and a *Community* section to further enhance user interaction and engagement.
 
-This project communicates with a FastAPI api for its backend and the relevant routes that we hit are documented in that repository's [README](https://github.com/moeez-tariq/HappyNest)
+This project communicates with a FastAPI api for its backend and the relevant routes that we hit are documented in that repository's [README](https://github.com/moeez-tariq/HappyNest).
 
 ## Component Documentation
 
