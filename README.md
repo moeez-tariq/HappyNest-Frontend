@@ -2,7 +2,7 @@
 
 ## Project Description
 
-*HappyNest* is a community-focused web application built using NextJS and MongoDB. The app aims to encourage users to engage in positive social actions by allowing them to share and interact with content around good deeds, community news, and relevant updates. Currently, the project includes sections for news, good deeds, a good deed of the day toast, and a leaderboard for who did the most good deeds.
+*HappyNest* is a community-focused web application built using NextJS and MongoDB. As of December 10th, 2024 we have deployed the most recent version of our app. HappyNest combines a number of innovative features that bring you global and local happy news and good deeds around the world. HappyNest is different from other sites like goodnewsnetwork because it allows for location specific news, something that other sites do not provide. One of our key insights was that people don't want to just hear about happy things, they want to know that there are happy things going on around them. Another key differentiator between other sites is that HappyNest provides HappyNest radio, an accessibility solution for the visually-impaired. Thirdly, HappyNest's Good Deeds features create a positive community of people helping each other and encouraging each other to do more good things through our leaderboard.
 
 This project communicates with a FastAPI api for its backend and the relevant routes that we hit are documented in that repository's [README](https://github.com/moeez-tariq/HappyNest).
 
@@ -74,6 +74,6 @@ Note: For the [live version](https://happynest-kappa.vercel.app/), the app works
 - **Mock Data Creation**: AI assisted in creating mock data, simulating API responses for realistic testing and layout verification.
 
 ## Wireframe
-[Wireframe Figma](https://www.figma.com/board/xB3yScVV0C7HwKwjxudB1r/HappyNest-Frontend?node-id=0-1&t=iHWp1yUGLsD4MQ0U-1)
+[Wireframe Figma](https://www.figma.com/board/BUYXm0lseTyi5gfGfLeGqb/Happy-Nest-Frontend-(Updated)?node-id=0-1&t=NA5nQ2MBngHpWP8c-1)
 
 ![HappyNest Wireframe](./WireFrame.png)
